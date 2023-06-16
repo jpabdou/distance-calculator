@@ -45,7 +45,6 @@ export default function Home() {
         //   Math.sqrt(Math.sin(((B[0]-A[0])* Math.PI / 180.0) /2)**2+(Math.cos(A[0] * Math.PI / 180.0)*Math.cos(B[0] * Math.PI / 180.0)*Math.sin(((B[1]-A[1])* Math.PI / 180.0 )/2)**2))
         //   // Math.sin(A[0])*Math.sin(B[0])+Math.cos(A[0])*Math.cos(B[0])*Math.cos(B[1]-A[1])
         //   )* 6371;
-        console.log(result)
         setDistance(result);
         // setCoordinateInput(defaultCoordinate);
        } catch (error) {
@@ -59,7 +58,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center my-2 justify-between p-24">
       <div className="z-10 w-full flex flex-col items-center justify-evenly my-2 font-mono text-lg lg:flex">
       <h1 className='text-2xl font-bold'>Distance Calculator</h1>
-      <h2 className='text-xl'>Input Point A and Point B as coordinates in comma-separated format with no spaces; input numbers before inputting &apos;-&apos; sign</h2>
+      <h2 className='text-xl'>Input Point A and Point B in decimal degree format with no spaces; input numbers before inputting &apos;-&apos; sign</h2>
         <form style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxWidth: "720px" }} onSubmit={onSubmit}>
           <TextField     
                         label="Point A"
