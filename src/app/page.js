@@ -59,7 +59,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center my-2 justify-between p-24">
       <div className="z-10 w-full flex flex-col items-center justify-evenly my-2 font-mono text-lg lg:flex">
       <h1 className='text-2xl font-bold'>Distance Calculator</h1>
-      <h2 className='text-xl'>Input Point A and Point B as coordinates in comma-separated format with no spaces; input numbers before inputting '-' sign</h2>
+      <h2 className='text-xl'>Input Point A and Point B as coordinates in comma-separated format with no spaces; input numbers before inputting &apos;-&apos; sign</h2>
         <form style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxWidth: "720px" }} onSubmit={onSubmit}>
           <TextField     
                         label="Point A"
