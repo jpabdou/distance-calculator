@@ -1,112 +1,89 @@
+"use client"
 import Image from 'next/image'
+import React, {useState, useEffect, useContext } from "react";
+import { FormControl, TextField, Button } from '@mui/material'
 
 export default function Home() {
+  const defaultCoordinate = {A: [0,0], B: [0,0]};
+  const [coordinateInput, setCoordinateInput] = useState(defaultCoordinate)
+  const [distance, setDistance] = useState(0);
+
+  const handleTextInput= (event) => {
+    let {value, name} = event.target;
+    let result = value.split(',').map(input=>{
+      return(parseFloat(input) || 0)
+    });
+        setCoordinateInput({...coordinateInput, [name]: result});
+    }
+
+    const haversine = (lat1, lon1, lat2, lon2) => {
+        // distance between latitudes
+        // and longitudes
+        let dLat = (lat2 - lat1) * Math.PI / 180.0;
+        let dLon = (lon2 - lon1) * Math.PI / 180.0;
+           
+        // convert to radiansa
+        lat1 = (lat1) * Math.PI / 180.0;
+        lat2 = (lat2) * Math.PI / 180.0;
+         
+        // apply formulae
+        let a = Math.pow(Math.sin(dLat / 2), 2) +
+                   Math.pow(Math.sin(dLon / 2), 2) *
+                   Math.cos(lat1) *
+                   Math.cos(lat2);
+        let rad = 6371;
+        let c = 2 * Math.asin(Math.sqrt(a));
+        return rad * c;
+    }
+
+    const onSubmit = async (event) => {
+      try {
+        event.preventDefault();
+        let {A, B} = coordinateInput;
+        let result = haversine(A[0], A[1], B[0], B[1])
+        // Math.acos(
+        //   Math.sqrt(Math.sin(((B[0]-A[0])* Math.PI / 180.0) /2)**2+(Math.cos(A[0] * Math.PI / 180.0)*Math.cos(B[0] * Math.PI / 180.0)*Math.sin(((B[1]-A[1])* Math.PI / 180.0 )/2)**2))
+        //   // Math.sin(A[0])*Math.sin(B[0])+Math.cos(A[0])*Math.cos(B[0])*Math.cos(B[1]-A[1])
+        //   )* 6371;
+        console.log(result)
+        setDistance(result);
+        // setCoordinateInput(defaultCoordinate);
+       } catch (error) {
+           console.error(error);
+    }
+  
+   };
+   
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <main className="flex min-h-screen flex-col items-center my-2 justify-between p-24">
+      <div className="z-10 w-full flex flex-col items-center justify-evenly my-2 font-mono text-lg lg:flex">
+      <h1 className='text-2xl font-bold'>Distance Calculator</h1>
+      <h2 className='text-xl'>Input Point A and Point B as coordinates in comma-separated format with no spaces; input numbers before inputting '-' sign</h2>
+        <form style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxWidth: "720px" }} onSubmit={onSubmit}>
+          <TextField     
+                        label="Point A"
+                        name="A"
+                        value={`${coordinateInput.A[0]},${coordinateInput.A[1]}`}
+                        onChange={handleTextInput}
+                        style={{  textAlign: 'center', width: "12rem", margin: "1px 1px"}}
+                        margin="normal"
+                        variant='filled'
+                    />
+          <TextField     
+              label="Point B"
+              name="B"
+              value={`${coordinateInput.B[0]},${coordinateInput.B[1]}`}
+              onChange={handleTextInput}
+              style={{  textAlign: 'center', width: "12rem"}}
+              margin="normal"
+              variant='filled'
+          />
+          <button variant='text' className="border-solid border-black border-4 p-3 hover:bg-green-600">Calculate</button>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+          
+        </form>
+        <h1>{`Distance: ${distance}km`}</h1>
       </div>
     </main>
   )
