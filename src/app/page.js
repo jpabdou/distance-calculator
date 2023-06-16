@@ -1,7 +1,5 @@
 "use client"
-import Image from 'next/image'
-import React, {useState, useEffect, useContext } from "react";
-import { FormControl, TextField, Button } from '@mui/material'
+import React, {useState } from "react";
 
 export default function Home() {
   const defaultCoordinate = {A: [0,0], B: [0,0]};
@@ -59,29 +57,28 @@ export default function Home() {
       <div className="z-10 w-full flex flex-col items-center justify-evenly my-2 font-mono text-lg lg:flex">
       <h1 className='text-2xl font-bold'>Distance Calculator</h1>
       <h2 className='text-xl'>Input Point A and Point B in decimal degree format with no spaces; input numbers before inputting &apos;-&apos; sign</h2>
-        <form style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxWidth: "720px" }} onSubmit={onSubmit}>
-          <TextField     
-                        label="Point A"
-                        name="A"
-                        value={`${coordinateInput.A[0]},${coordinateInput.A[1]}`}
-                        onChange={handleTextInput}
-                        style={{  textAlign: 'center', width: "12rem", margin: "1px 1px"}}
-                        margin="normal"
-                        variant='filled'
-                    />
-          <TextField     
-              label="Point B"
-              name="B"
-              value={`${coordinateInput.B[0]},${coordinateInput.B[1]}`}
-              onChange={handleTextInput}
-              style={{  textAlign: 'center', width: "12rem"}}
-              margin="normal"
-              variant='filled'
+        <div>
+        <form className='flex flex-col justify-evenly my-2as'  onSubmit={onSubmit}>
+          <label htmlFor='A'>Point A</label>
+          <input  
+            className='my-2 text-center w-48'   
+            name="A"
+            value={`${coordinateInput.A[0]},${coordinateInput.A[1]}`}
+            onChange={handleTextInput}
+          />
+          <label htmlFor='B'>Point B</label>
+          <input     
+            name="B"
+            value={`${coordinateInput.B[0]},${coordinateInput.B[1]}`}
+            onChange={handleTextInput}
+            className='my-2 text-center w-48'   
           />
           <button variant='text' className="border-solid border-black border-4 p-3 hover:bg-green-600">Calculate</button>
 
           
         </form>
+        </div>
+
         <h1>{`Distance: ${distance}km`}</h1>
       </div>
     </main>
