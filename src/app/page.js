@@ -2,7 +2,7 @@
 import React, {useState } from "react";
 
 export default function Home() {
-  const defaultCoordinate = {A: [0,0], B: [0,0]};
+  const defaultCoordinate = {A: [45,90], B: [45,90]};
   const [coordinateInput, setCoordinateInput] = useState(defaultCoordinate)
   const [distance, setDistance] = useState(0);
 
@@ -11,7 +11,7 @@ export default function Home() {
     let result = value.split(',').map(input=>{
       return(parseFloat(input) || 0)
     });
-        setCoordinateInput({...coordinateInput, [name]: result});
+      setCoordinateInput({...coordinateInput, [name]: result});
     }
 
     const haversine = (lat1, lon1, lat2, lon2) => {
@@ -20,7 +20,7 @@ export default function Home() {
         let dLat = (lat2 - lat1) * Math.PI / 180.0;
         let dLon = (lon2 - lon1) * Math.PI / 180.0;
            
-        // convert to radiansa
+        // convert to radians
         lat1 = (lat1) * Math.PI / 180.0;
         lat2 = (lat2) * Math.PI / 180.0;
          
@@ -39,12 +39,7 @@ export default function Home() {
         event.preventDefault();
         let {A, B} = coordinateInput;
         let result = haversine(A[0], A[1], B[0], B[1])
-        // Math.acos(
-        //   Math.sqrt(Math.sin(((B[0]-A[0])* Math.PI / 180.0) /2)**2+(Math.cos(A[0] * Math.PI / 180.0)*Math.cos(B[0] * Math.PI / 180.0)*Math.sin(((B[1]-A[1])* Math.PI / 180.0 )/2)**2))
-        //   // Math.sin(A[0])*Math.sin(B[0])+Math.cos(A[0])*Math.cos(B[0])*Math.cos(B[1]-A[1])
-        //   )* 6371;
         setDistance(result);
-        // setCoordinateInput(defaultCoordinate);
        } catch (error) {
            console.error(error);
     }
